@@ -29,7 +29,7 @@ Audio Recording → Speaker Diarization → Voice Embeddings → Speaker Matchin
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/cyberinnovator/student_interaction_tracker.git
    cd student-voice-track
    ```
 
