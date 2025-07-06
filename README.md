@@ -1,4 +1,4 @@
-# Student Voice Tracking System
+# Student Voice Tracking System in Online Meets
 
 A real-time audio processing system that tracks student participation in classroom discussions using speaker diarization, voice embeddings, and speech-to-text transcription.
 
@@ -30,7 +30,7 @@ Audio Recording → Speaker Diarization → Voice Embeddings → Speaker Matchin
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/cyberinnovator/student_interaction_tracker.git
-   cd student-voice-track
+   cd student_interaction_tracker
    ```
 
 2. **Create virtual environment:**
