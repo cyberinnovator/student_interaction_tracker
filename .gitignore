@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+myenv/
+venv/
+ENV/
+env/
+.venv/
+
+# Audio files
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.aac
+audio_chunk*.wav
+*_processed.wav
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Embeddings
+embeddings/*.npy
+embeddings/*.pkl
+
+# Model files
+*.bin
+*.model
+*.pt
+*.pth
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Output files
+output.rttm
+*.rttm
+
+# Hugging Face cache
+.cache/
+huggingface/
+
+# Tokens and secrets
+token.txt
+*.token
+.env 
