@@ -9,7 +9,8 @@ A real-time audio processing system that tracks student participation in classro
 - 🎵 **Voice Embeddings**: Extracts unique voice signatures for each speaker
 - 👥 **Speaker Recognition**: Matches speakers to known teachers and students
 - 📝 **Speech Transcription**: Converts speech to text using faster-whisper
-- 🔍 **Roll Number Extraction**: Automatically extracts student roll numbers from speech
+- 🔍 **Roll Number Extraction**: Automatically extracts student roll numbers from speech using regex and transformers
+- 🆔 **Unknown Speaker Registration**: Handles unknown speakers by transcribing, extracting roll numbers, and registering new students
 - 🏆 **Participation Leaderboard**: Tracks and ranks student participation time
 - 🔧 **Audio Preprocessing**: Noise reduction and speech enhancement for better transcription
 
@@ -24,6 +25,8 @@ Audio Recording → Speaker Diarization → Voice Embeddings → Speaker Matchin
 - Python 3.8+
 - Microphone access
 - Internet connection (for model downloads)
+- See `requirements.txt` for all Python dependencies (including `transformers` for roll number extraction)
+- `sqlite3` is used for the database and is included in the Python standard library
 
 ## Installation
 
@@ -46,7 +49,7 @@ Audio Recording → Speaker Diarization → Voice Embeddings → Speaker Matchin
 
 4. **Set up Hugging Face token:**
    - Get your token from [Hugging Face](https://huggingface.co/settings/tokens)
-   - Update the token in `diarization.py`
+   - Update the token in `diarization.py` if required
 
 ## Usage
 
@@ -63,23 +66,25 @@ Audio Recording → Speaker Diarization → Voice Embeddings → Speaker Matchin
    - Record 10-second audio chunks
    - Identify speakers using diarization
    - Match speakers to known students/teachers
-   - Transcribe speech for new speakers
-   - Extract roll numbers from speech
+   - Transcribe speech for new/unknown speakers
+   - Extract roll numbers from speech (using regex and transformers)
+   - Register new students if roll number is found
    - Update participation leaderboard
 
 ## File Structure
 
 ```
-student-voice-track/
+student_interaction_tracker/
 ├── main.py                 # Main application entry point
 ├── db.py                   # Database operations (SQLite)
 ├── diarization.py          # Speaker diarization using pyannote.audio
 ├── embedding.py            # Voice embedding extraction and comparison
 ├── audio_processing.py     # Audio preprocessing for better transcription
 ├── unknown_speaker.py      # Unknown speaker processing and transcription
+├── rollno_extractor.py     # Roll number extraction using regex and transformers
 ├── student_voice_track.db  # SQLite database
 ├── embeddings/             # Stored voice embeddings
-└── README.md              # This file
+└── README.md               # This file
 ```
 
 ## Configuration
@@ -95,7 +100,7 @@ student-voice-track/
 - **Similarity Threshold**: 0.6 (configurable)
 
 ### Database
-- **Storage**: SQLite database
+- **Storage**: SQLite database (via Python stdlib)
 - **Tables**: students, teachers
 - **Data**: Roll numbers, embedding paths, participation time
 
@@ -106,7 +111,7 @@ student-voice-track/
 3. **Embedding Extraction**: Creates voice signatures for each speaker
 4. **Speaker Matching**: Compares embeddings with known speakers
 5. **Transcription**: Converts speech to text for unknown speakers
-6. **Roll Number Extraction**: Uses regex patterns to find roll numbers
+6. **Roll Number Extraction**: Uses regex and transformers to find roll numbers
 7. **Database Update**: Saves new students and updates participation time
 8. **Leaderboard**: Displays participation rankings
 
@@ -154,3 +159,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [faster-whisper](https://github.com/guillaumekln/faster-whisper) for speech transcription
 - [Resemblyzer](https://github.com/resemble-ai/Resemblyzer) for voice embeddings
 - [librosa](https://librosa.org/) for audio processing 
+- [transformers](https://github.com/huggingface/transformers) for roll number extraction
