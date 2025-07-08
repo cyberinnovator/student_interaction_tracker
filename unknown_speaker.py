@@ -4,9 +4,8 @@ unknown_speaker.py
 Handles unknown speaker processing: transcription, roll number extraction, and student registration.
 """
 
-import re
-import numpy as np
 import logging
+from rollno_extractor import extract_roll_number
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -14,10 +13,8 @@ logger = logging.getLogger(__name__)
 # Import faster-whisper
 try:
     from faster_whisper import WhisperModel
-    FASTER_WHISPER_AVAILABLE = True
     logger.info("faster-whisper imported successfully")
 except ImportError:
-    FASTER_WHISPER_AVAILABLE = False
     logger.error("faster-whisper not installed. Please install with: pip install faster-whisper")
     raise
 
@@ -28,24 +25,17 @@ def setup_cpu_mode():
     print(f"   Device: CPU")
     print(f"   Compute Type: float32")
     print(f"   Status: ✅ CPU MODE ENABLED")
-    return []
+    # No need to return anything
 
 # Transcription configuration - CPU mode
 DEVICE = "cpu"  # Use CPU for transcription
 COMPUTE_TYPE = "float32"  # Use float32 for compatibility
 
-# Whisper model options - optimized for CPU
-WHISPER_MODELS = {
-    "tiny": "tiny",      # Fastest, smallest (39MB), perfect for CPU
-    "base": "base",      # Good balance (74MB), works well on CPU
-    "small": "small",    # Better accuracy (244MB), slower on CPU
-}
-
 # Choose your preferred model here - tiny is fastest and safest for CPU
 SELECTED_MODEL = "tiny"  # Recommended for CPU
 
 # Setup CPU mode
-supported_compute_types = setup_cpu_mode()
+setup_cpu_mode()
 
 # Load faster-whisper model with CPU
 whisper_model = None
@@ -84,54 +74,6 @@ except Exception as e:
     except Exception as e2:
         logger.error(f"Failed to load fallback model: {e2}")
         raise
-
-def extract_roll_number_from_text(text):
-    """
-    Extract roll number from transcribed text using regex patterns.
-    Args:
-        text (str): Transcribed text.
-    Returns:
-        str or None: Roll number if found, else None.
-    """
-    try:
-        # Strictly look for "roll no. is" pattern as requested
-        patterns = [
-            r'roll\s+no\.?\s+is\s+(\d+)',  # "roll no. is 123" or "roll no is 123"
-            r'roll\s+number\s+is\s+(\d+)',  # "roll number is 123"
-            r'role\s+number\s+is\s+(\d+)',  # "role number is 123" (common transcription)
-            r'my\s+roll\s+no\.?\s+is\s+(\d+)',  # "my roll no. is 123"
-            r'my\s+role\s+number\s+is\s+(\d+)',  # "my role number is 123"
-            r'i\s+am\s+(\d+)',  # "i am 123" (fallback)
-        ]
-        
-        text_lower = text.lower()
-        
-        # Print roll number extraction process prominently
-        print("\n" + "🔍"*20)
-        print("🔍 ROLL NUMBER EXTRACTION:")
-        print("🔍"*20)
-        print(f"Text to analyze: '{text}'")
-        print(f"Text (lowercase): '{text_lower}'")
-        
-        for i, pattern in enumerate(patterns, 1):
-            match = re.search(pattern, text_lower)
-            print(f"Pattern {i}: {pattern}")
-            if match:
-                roll_no = match.group(1)
-                print(f"✅ MATCH FOUND! Roll number: {roll_no}")
-                logger.info(f"Extracted roll number: {roll_no} from text: '{text}' using pattern: {pattern}")
-                print("🔍"*20 + "\n")
-                return roll_no
-            else:
-                print(f"❌ No match")
-        
-        print("❌ NO ROLL NUMBER FOUND IN ANY PATTERN")
-        logger.warning(f"No roll number found in text: '{text}'")
-        print("🔍"*20 + "\n")
-        return None
-    except Exception as e:
-        logger.error(f"Error extracting roll number: {e}")
-        return None
 
 def transcribe_full_audio(audio_path):
     """
@@ -262,7 +204,7 @@ def process_unknown_speaker(embedding, audio_path, segments, full_transcription,
         roll_no = None
         for speaker, transcription in speaker_transcriptions.items():
             if transcription.strip():
-                roll_no = extract_roll_number_from_text(transcription)
+                roll_no = extract_roll_number(transcription)
                 if roll_no:
                     logger.info(f"Found roll number {roll_no} for speaker {speaker}")
                     break

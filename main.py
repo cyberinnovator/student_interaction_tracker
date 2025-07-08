@@ -15,8 +15,7 @@ from embedding import (
 # Import unknown speaker functions from unknown_speaker.py
 from unknown_speaker import (
     process_unknown_speaker,
-    transcribe_full_audio,
-    extract_roll_number_from_text
+    transcribe_full_audio
 )
 from db import get_all_student_embeddings, get_all_teacher_embeddings, update_student_time, add_teacher, add_student, get_student_by_roll_no, get_teacher_by_teacher_id
 import math
