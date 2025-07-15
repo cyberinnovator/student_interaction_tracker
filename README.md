@@ -149,10 +149,6 @@ The system recognizes these patterns in speech:
 4. Test thoroughly
 5. Submit a pull request
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - [pyannote.audio](https://github.com/pyannote/pyannote-audio) for speaker diarization
